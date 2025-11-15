@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Speed Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app" id="app">
+        <!-- Menu Screen -->
+        <div class="screen menu-screen" id="menuScreen">
+            <div class="menu-content">
+                <div class="menu-header">
+                    <h1 class="game-title">Typing Speed Game</h1>
+                    <p class="game-subtitle">Test your typing speed and accuracy</p>
+                </div>
+                
+                <div class="card menu-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Choose Your Difficulty</h2>
+                        <p class="card-description">Select a difficulty level to begin</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="difficulty-buttons">
+                            <button class="btn difficulty-btn" onclick="selectDifficulty('easy')">
+                                <span class="btn-text">Easy</span>
+                                <span class="difficulty-desc">Short, common words</span>
+                            </button>
+                            <button class="btn difficulty-btn" onclick="selectDifficulty('medium')">
+                                <span class="btn-text">Medium</span>
+                                <span class="difficulty-desc">Moderate length words</span>
+                            </button>
+                            <button class="btn difficulty-btn" onclick="selectDifficulty('hard')">
+                                <span class="btn-text">Hard</span>
+                                <span class="difficulty-desc">Complex, long words</span>
+                            </button>
+                        </div>
+                        
+                        <div class="instructions">
+                            <h3>How to Play:</h3>
+                            <ul>
+                                <li>Type the displayed words as quickly and accurately as possible</li>
+                                <li>Press Space for moving to the next word</li>
+                                <li>You have 60 seconds to type as many words as you can</li>
+                                <li>Your WPM (Words Per Minute) and accuracy will be tracked</li>
+                            </ul>
+                        </div>
+                        
+                        <button class="btn btn-primary start-button" onclick="startGame()">
+                            Start Game
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card leaderboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Top Scores - <span id="leaderboardDifficulty">Medium</span></h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="leaderboard-list" id="leaderboardList">
+                            <p class="no-scores">No scores yet. Be the first!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="screen game-screen" id="gameScreen" style="display: none;">
+            <div class="game-header">
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-label">Time</span>
+                        <span class="stat-value time" id="timeDisplay">60s</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">WPM</span>
+                        <span class="stat-value" id="wpmDisplay">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Accuracy</span>
+                        <span class="stat-value" id="accuracyDisplay">100%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Score</span>
+                        <span class="stat-value" id="scoreDisplay">0</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 100%;"></div>
+                </div>
+            </div>
+            
+            <div class="typing-area">
+                <div class="words-display" id="wordsDisplay">
+                    <!-- Words will be dynamically inserted here -->
+                </div>
+                
+                <input 
+                    type="text" 
+                    class="typing-input" 
+                    id="typingInput"
+                    placeholder="Start typing..."
+                    autocomplete="off"
+                    spellcheck="false"
+                />
+                
+                <div class="current-word-display">
+                    <span class="label">Current word:</span>
+                    <span class="word" id="currentWordDisplay"></span>
+                </div>
+                <button class="btn btn-outline end-game-btn" onclick="endGame()" style="margin-top: 20px;">End Game</button>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div class="screen gameover-screen" id="gameOverScreen" style="display: none;">
+            <div class="card gameover-card">
+                <div class="card-header">
+                    <h2 class="gameover-title">Game Over!</h2>
+                    <p class="card-description">Here are your results</p>
+                </div>
+                <div class="card-content">
+                    <div class="final-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">Words Per Minute</span>
+                            <span class="stat-value-large" id="finalWpm">0 WPM</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Accuracy</span>
+                            <span class="stat-value-large" id="finalAccuracy">0%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Correct Words</span>
+                            <span class="stat-value-large" id="finalCorrect">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Incorrect Words</span>
+                            <span class="stat-value-large" id="finalIncorrect">0</span>
+                        </div>
+                        <div class="stat-row highlight">
+                            <span class="stat-label">Final Score</span>
+                            <span class="stat-value-large score" id="finalScore">0 points</span>
+                        </div>
+                    </div>
+                    
+                    <div class="gameover-actions">
+                        <button class="btn btn-primary action-btn" onclick="startGame()">
+                            Play Again
+                        </button>
+                        <button class="btn btn-outline action-btn" onclick="showMenu()">
+                            Back to Menu
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Name Dialog -->
+        <div class="dialog-overlay" id="nameDialog" style="display: none;">
+            <div class="dialog-content">
+                <div class="dialog-header">
+                    <h3>Save Your Score!</h3>
+                    <p>You scored <span id="dialogScore">0</span> points! Enter your name to save it to the leaderboard.</p>
+                </div>
+                <input 
+                    type="text" 
+                    class="input" 
+                    id="playerNameInput"
+                    placeholder="Enter your name"
+                    maxlength="20"
+                />
+                <div class="dialog-actions">
+                    <button class="btn btn-outline" onclick="closeNameDialog()">Skip</button>
+                    <button class="btn btn-primary" onclick="saveScore()">Save Score</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

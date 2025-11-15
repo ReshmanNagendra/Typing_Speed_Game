@@ -1,0 +1,55 @@
+
+pseudocode_content = """Pseudocode — Typing Speed Game
+
+CONST GAME_DURATION = 60
+CONST DISPLAY_WORDS = 15
+DIFFICULTY_POINTS = { easy:10, medium:15, hard:25 }
+
+Global:
+  words[], difficulty='easy', currentWordIndex=0, typedText=''
+  timeLeft=GAME_DURATION, timerInterval=null, startTime=null, isGameActive=false
+  correctWords=0, incorrectWords=0, totalChars=0, correctChars=0, score=0
+
+FUNCTION init():
+  loadWordsFor(difficulty)
+  renderLeaderboardUI()
+  showScreen('menuScreen')
+
+FUNCTION loadWordsFor(level):
+  words = copy(wordLists[level])
+  shuffle(words)
+
+FUNCTION startGame():
+  reset stats
+  startTime = now()
+  startTimer()
+  renderWords()
+
+FUNCTION handleTyping(input):
+  typedText = input.value
+  IF input endsWith space OR equals currentWord THEN
+    IF typedWord == currentWord:
+      correctWords++
+      score += points
+      correctChars += word.length
+    ELSE
+      incorrectWords++
+      matched = countMatchingPrefix(typedWord, currentWord)
+      correctChars += matched
+    currentWordIndex++
+    clear input
+    updateStats()
+
+FUNCTION updateStats():
+  elapsedMinutes = (now() - startTime) / 60000
+  wpm = round(correctWords / elapsedMinutes)
+  accuracy = round((correctChars / totalChars) * 100)
+
+FUNCTION endGame():
+  stop timer
+  show final stats
+  show save dialog if score>0
+
+FUNCTION saveScore():
+  read name, push to localStorage, sort, and save
+"""
