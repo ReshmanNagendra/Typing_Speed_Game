@@ -2,7 +2,7 @@
 
 ## Team Information
 **Game Title:** Typing Speed Game  
-**Team Members:** [Your Team Members Here]  
+**Team Members:** 
 **Roles:**
 - Sai Raju: HTML Structure
 - Abinaya: CSS Styling & Visual Design
