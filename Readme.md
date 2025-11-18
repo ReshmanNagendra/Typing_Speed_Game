@@ -259,6 +259,3 @@ TypeSpeed_Game/
 **Color Palette:** Teal/Cyan gradient theme for calm, focused typing experience
 
 ---
-you can view the game live at 
-
-https://reshmannagendra.github.io/Typing_Speed_Game/
